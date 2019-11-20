@@ -1,0 +1,15 @@
+{
+  "name": "wssmaxstopwatch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "stopWatch.js",
+  "scripts": {
+    "start": "node stopWatch.js"
+  },
+  "author": "Dimitri Aatos Ellinas",
+  "license": "CC-BY-4.0",
+  "dependencies": {
+    "express": "~4.15.2",
+    "ws": "^4.0.0"
+  }
+}
