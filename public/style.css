@@ -3,15 +3,49 @@ html, body {
   margin: 0px;
 }
 
+:root {
+  --main-color: black;
+  --main-bg-color: white;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --main-color: black;
+    --main-bg-color: white;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --main-color: white;
+    --main-bg-color: black;
+  }
+}
+
 .container {
   width: 100%;
   height: 100%;
   display:flex;
   justify-content:center;
   align-items:center;
+  flex-wrap: wrap;
+  color: var(--main-color);
+  background-color: var(--main-bg-color);
 }
 
 #time {
   text-align: center;
   font-size: 18vw;
+}
+
+#noSleep {
+  position: absolute;
+  bottom: 3vh;
+  /* right: 3vw; */
+  margin: auto;
+  /* width: 100px; */
+  /* height: 50px; */
+  background-color: var(--main-color);
+  color: var(--main-bg-color);
+  font-size: 50px;
 }

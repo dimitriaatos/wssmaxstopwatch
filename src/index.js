@@ -1,7 +1,19 @@
+import NoSleep from 'nosleep.js'
+
 const state = {
-  start: 0,
+  start: undefined,
+  stop: undefined,
   play: false,
 }
+
+const noSleep = new NoSleep()
+const noSleepButton = document.getElementById('noSleep')
+
+noSleepButton.addEventListener('click', () => {
+  // noSleepButton.removeEventListener('click', enableNoSleep, false)
+  noSleepButton.style.display = 'none'
+  noSleep.enable()
+}, false)
 
 const timeFormat = (...args) => {
   let timeString = ''
@@ -27,19 +39,24 @@ const calcTime = () => {
 
 let steps;
 
-const stopwatch = (message, newState) => {
+const stopwatch = (message, newState, start) => {
   switch (message) {
     case 'playPause':
       if (state.play != newState.play) {
         if (newState.play) {
+          if (state.start != undefined && state.stop != undefined) start = start - (state.stop - state.start)
           steps = setInterval(calcTime, 50)
+          newState.start = start
         } else {
           clearInterval(steps)
+          newState.stop = start
         }
       }
       break
     case 'reset':
       displayTime(0)
+      state.start = start
+      newState.stop = undefined
       break
   }
 
@@ -50,12 +67,19 @@ const maxSocket = new WebSocket('ws://localhost:7474')
 
 maxSocket.onopen = (event) => {
 	console.log('sending data...')
-	maxSocket.send('Ready, willing and able!')
+	maxSocket.send('Message from the browser')
 }
 
 maxSocket.onmessage = (event) => {
-  const {message, ...newState} = JSON.parse(event.data)
-  stopwatch(message, newState)
+  const {message, start, ...newState} = JSON.parse(event.data)
+  stopwatch(message, newState, start)
 }
 
-window.addEventListener('beforeunload', maxSocket.close)
+maxSocket.onclose = (event) => {
+  maxSocket.send('Closing connection from browser')
+}
+
+window.onbeforeunload = () => {
+  maxSocket.onclose()
+  websocket.close()
+}
