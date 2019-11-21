@@ -13,7 +13,7 @@
     "clipboardy": "^2.1.0",
     "express": "~4.15.2",
     "ip": "^1.1.5",
-    "nosleep.js": "^0.9.0",
+    "nosleep.js": "github:ViRPo/NoSleep.js",
     "ws": "^4.0.0"
   },
   "devDependencies": {

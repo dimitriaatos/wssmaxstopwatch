@@ -4,7 +4,7 @@ module.exports = {
   mode: 'development',
   devtool: 'source-map',
   watch: true,
-  entry: path.resolve(__dirname, 'src/index.js'),
+  entry: path.resolve(__dirname, 'src/client/index.js'),
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'public/js'),

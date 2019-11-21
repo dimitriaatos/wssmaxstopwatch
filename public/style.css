@@ -38,14 +38,46 @@ html, body {
   font-size: 18vw;
 }
 
-#noSleep {
+#message {
   position: absolute;
   bottom: 3vh;
-  /* right: 3vw; */
+  display: none;
   margin: auto;
   /* width: 100px; */
   /* height: 50px; */
-  background-color: var(--main-color);
-  color: var(--main-bg-color);
-  font-size: 50px;
+  color: var(--main-color);
+  background-color: var(--main-bg-color);
+  font-size: 4vw;
+}
+
+#noConnection {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
+
+#noConnection .panel {
+  position: absolute;
+  text-align: center;
+  opacity: 0.5;
+  left: 1vw;
+  right: 1vw;
+  bottom: 1vh;
+  top: 1vh;
+  background-color: var(--main-bg-color);
+  color: var(--main-color);
+}
+
+#noConnection h1 {
+  color: var(--main-color);
+  background-color: var(--main-bg-color);
+  font-size: 4vw;
+  position: absolute;
+  top: 3vh;
+  margin: auto;
+  text-align: center;
+  width: 100%;
 }

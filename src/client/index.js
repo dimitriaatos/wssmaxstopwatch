@@ -1,19 +1,12 @@
-import NoSleep from 'nosleep.js'
-
+import noSleep from './noSleep.js'
+console.log('WakeLock' in window)
 const state = {
   start: undefined,
   stop: undefined,
   play: false,
 }
 
-const noSleep = new NoSleep()
-const noSleepButton = document.getElementById('noSleep')
-
-noSleepButton.addEventListener('click', () => {
-  // noSleepButton.removeEventListener('click', enableNoSleep, false)
-  noSleepButton.style.display = 'none'
-  noSleep.enable()
-}, false)
+noSleep(document.getElementById('message'))
 
 const timeFormat = (...args) => {
   let timeString = ''
@@ -37,26 +30,19 @@ const calcTime = () => {
   displayTime(distance)
 }
 
-let steps;
+let steps
 
-const stopwatch = (message, newState, start) => {
+const stopwatch = (newState, message) => {
   switch (message) {
     case 'playPause':
-      if (state.play != newState.play) {
-        if (newState.play) {
-          if (state.start != undefined && state.stop != undefined) start = start - (state.stop - state.start)
-          steps = setInterval(calcTime, 50)
-          newState.start = start
-        } else {
-          clearInterval(steps)
-          newState.stop = start
-        }
+      if (newState.play) {
+        steps = setInterval(calcTime, 50)
+      } else {
+        clearInterval(steps)
       }
       break
     case 'reset':
       displayTime(0)
-      state.start = start
-      newState.stop = undefined
       break
   }
 
@@ -67,16 +53,23 @@ const maxSocket = new WebSocket('ws://localhost:7474')
 
 maxSocket.onopen = (event) => {
 	console.log('sending data...')
-	maxSocket.send('Message from the browser')
+	// maxSocket.send('Message from the browser')
 }
 
 maxSocket.onmessage = (event) => {
-  const {message, start, ...newState} = JSON.parse(event.data)
-  stopwatch(message, newState, start)
+  const {message, ...newState} = JSON.parse(event.data)
+  stopwatch(newState, message)
+}
+
+const noConnection = (mode = true) => {
+  document.getElementById('noConnection').style.display = 'block'
 }
 
 maxSocket.onclose = (event) => {
-  maxSocket.send('Closing connection from browser')
+  // maxSocket.send('Closing connection from browser')
+  stopwatch({play: false}, 'playPause')
+  stopwatch({}, 'reset')
+  noConnection(true)
 }
 
 window.onbeforeunload = () => {
