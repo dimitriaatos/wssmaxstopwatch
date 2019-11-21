@@ -16,24 +16,21 @@ const broadcast = (data, ws) => {
 
 wss.on('connection', (ws, req) => {
 	Max.post('New device connected')
-	if (state.play) {
-		broadcast(JSON.stringify({
-			start: state.start,
-			play: state.play,
-			message: 'playPause',
-		}), ws)
-	}
+	broadcast(JSON.stringify({
+		start: state.start,
+		play: state.play,
+		message: 'playPause',
+	}), ws)
 
 	ws.on('message', (message) => {Max.post(message)})
 
 	ws.on('close', () => {
-		Max.post('Connection terminated')
-		ws.terminate()
+		Max.post('Connection closed')
+		// ws.terminate()
 	})
 
 })
 
-// not working
 process.on('exit', () => {
 	wss.clients.forEach(ws => {
 		ws.close()

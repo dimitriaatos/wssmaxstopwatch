@@ -1,5 +1,6 @@
 import noSleep from './noSleep.js'
-console.log('WakeLock' in window)
+import ReconnectingWebSocket from 'reconnectingwebsocket'
+
 const state = {
   start: undefined,
   stop: undefined,
@@ -49,11 +50,16 @@ const stopwatch = (newState, message) => {
   Object.assign(state, newState)
 }
 
-const maxSocket = new WebSocket('ws://localhost:7474')
+const noConnection = (mode = true) => {
+  document.getElementById('noConnection').style.display = mode ? 'block' : 'none'
+}
+
+const maxSocket = new ReconnectingWebSocket(`ws://${window.location.hostname}:7474`)
+
+maxSocket.timeoutInterval = 2000
 
 maxSocket.onopen = (event) => {
-	console.log('sending data...')
-	// maxSocket.send('Message from the browser')
+  noConnection(false)
 }
 
 maxSocket.onmessage = (event) => {
@@ -61,12 +67,7 @@ maxSocket.onmessage = (event) => {
   stopwatch(newState, message)
 }
 
-const noConnection = (mode = true) => {
-  document.getElementById('noConnection').style.display = 'block'
-}
-
 maxSocket.onclose = (event) => {
-  // maxSocket.send('Closing connection from browser')
   stopwatch({play: false}, 'playPause')
   stopwatch({}, 'reset')
   noConnection(true)
@@ -74,5 +75,5 @@ maxSocket.onclose = (event) => {
 
 window.onbeforeunload = () => {
   maxSocket.onclose()
-  websocket.close()
+  maxSocket.close()
 }

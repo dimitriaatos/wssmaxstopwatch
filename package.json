@@ -14,6 +14,7 @@
     "express": "~4.15.2",
     "ip": "^1.1.5",
     "nosleep.js": "github:ViRPo/NoSleep.js",
+    "reconnectingwebsocket": "^1.0.0",
     "ws": "^4.0.0"
   },
   "devDependencies": {
