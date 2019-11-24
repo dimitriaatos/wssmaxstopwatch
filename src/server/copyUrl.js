@@ -1,10 +1,10 @@
 const clipboard = require('clipboardy')
 const Max = require('max-api')
-const state = require('./state')
+const {server} = require('./state')
 
 const copyUrl = () => {
-	clipboard.writeSync(state.url)
-	Max.post(`${state.url} copied to clipboard`)
+	clipboard.writeSync(server.url)
+	Max.post(`${server.url} copied to clipboard`)
 }
 
 module.exports = copyUrl

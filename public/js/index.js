@@ -562,6 +562,78 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
+/***/ "./src/client/formatTime.js":
+/*!**********************************!*\
+  !*** ./src/client/formatTime.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const calcs = Object.entries({
+  h: [1000 * 60 * 60, 24],
+  m: [1000 * 60, 60],
+  s: [1000, 60],
+  d: [100, 10],
+  c: [10, 10],
+}).reduce((accum, [name, [divider, modulo]]) => {
+  accum[name] = {divider, modulo}
+  return accum
+}, {})
+
+const formatDigits = (pTime, pFormat) => {
+  const numDigits = pFormat.length
+  const {divider, modulo} = calcs[pFormat.charAt(0)]
+  return ('0000' + Math.floor((pTime / divider) % modulo)).slice(-numDigits)
+}
+
+const formatTime = (time, format) => (
+  (time < 0 ? '-' : '') + Object.keys(calcs).reduce((accum, key) => (
+    accum.replace(
+      new RegExp(`${key}+`, 'g'),
+      // new RegExp(`(^|[^\\\\])${key}+`, 'g'),
+      (...args) => {
+        return formatDigits(Math.abs(time), args[0])
+      }
+    )
+  ), format)
+  
+)
+
+/* harmony default export */ __webpack_exports__["default"] = (formatTime);
+
+// console.log(formatTime(7740000, 'hh:mm:ss:d0'))
+
+/***/ }),
+
+/***/ "./src/client/fullScreen.js":
+/*!**********************************!*\
+  !*** ./src/client/fullScreen.js ***!
+  \**********************************/
+/*! exports provided: toggleFullScreen */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toggleFullScreen", function() { return toggleFullScreen; });
+const toggleFullScreen = () => {
+  const doc = window.document
+  const docEl = doc.documentElement
+
+  const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen
+  const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen
+
+  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl)
+  }
+  else {
+    cancelFullScreen.call(doc)
+  }
+}
+
+/***/ }),
+
 /***/ "./src/client/index.js":
 /*!*****************************!*\
   !*** ./src/client/index.js ***!
@@ -571,88 +643,81 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _noSleep_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./noSleep.js */ "./src/client/noSleep.js");
-/* harmony import */ var reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! reconnectingwebsocket */ "./node_modules/reconnectingwebsocket/reconnecting-websocket.js");
-/* harmony import */ var reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _noSleep__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./noSleep */ "./src/client/noSleep.js");
+/* harmony import */ var _formatTime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatTime */ "./src/client/formatTime.js");
+/* harmony import */ var reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! reconnectingwebsocket */ "./node_modules/reconnectingwebsocket/reconnecting-websocket.js");
+/* harmony import */ var reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _fullScreen__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fullScreen */ "./src/client/fullScreen.js");
+
+
 
 
 
 const state = {
-  start: undefined,
-  stop: undefined,
-  play: false,
+  format: 'hh:mm:ss:.d0',
 }
 
-Object(_noSleep_js__WEBPACK_IMPORTED_MODULE_0__["default"])(document.getElementById('message'))
-
-const timeFormat = (...args) => {
-  let timeString = ''
-  for (const num of args) {
-    timeString = timeString.concat(num > 9 ? num : '0' + num, ':')
-  }
-  return timeString.slice(0, 11)
+const constants = {
+  updateTime: 50,
+  reconnectAttemptInterval: 2000,
 }
 
-const displayTime = (distance) => {
-  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24)
-  const minutes = Math.floor((distance / (1000 * 60)) % 60)
-  const seconds = Math.floor((distance / 1000) % 60)
-  const centiseconds = Math.floor((distance / 100) % 10)
-  document.getElementById('time').innerHTML = timeFormat(hours, minutes, seconds) + centiseconds + '0'
+document.addEventListener('dblclick', _fullScreen__WEBPACK_IMPORTED_MODULE_3__["toggleFullScreen"])
+
+Object(_noSleep__WEBPACK_IMPORTED_MODULE_0__["default"])(document.getElementById('message'))
+
+const displayTime = (time) => {
+  document.getElementById('time').innerHTML = time
 }
 
-const calcTime = () => {
-  const now = new Date().getTime()
-  const distance = now - state.start
-  displayTime(distance)
+const getDistance = () => (state.play ? new Date().getTime() : state.stop) - state.start
+
+const handleTime = () => {
+  displayTime(Object(_formatTime__WEBPACK_IMPORTED_MODULE_1__["default"])(getDistance(), state.format))
 }
 
 let steps
 
-const stopwatch = (newState, message) => {
-  switch (message) {
-    case 'playPause':
-      if (newState.play) {
-        steps = setInterval(calcTime, 50)
-      } else {
-        clearInterval(steps)
-      }
-      break
-    case 'reset':
-      displayTime(0)
-      break
-  }
-
+const stopwatch = (newState) => {
+  const playChange = state.play != newState.play
   Object.assign(state, newState)
+
+  if (playChange) {
+    steps = setInterval(handleTime, constants.updateTime)
+  } else {
+    clearInterval(steps)
+    handleTime()
+  }
 }
-
-const noConnection = (mode = true) => {
-  document.getElementById('noConnection').style.display = mode ? 'block' : 'none'
-}
-
-const maxSocket = new reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_1___default.a(`ws://${window.location.hostname}:7474`)
-
-maxSocket.timeoutInterval = 2000
-
-maxSocket.onopen = (event) => {
-  noConnection(false)
-}
-
-maxSocket.onmessage = (event) => {
-  const {message, ...newState} = JSON.parse(event.data)
-  stopwatch(newState, message)
-}
-
-maxSocket.onclose = (event) => {
-  stopwatch({play: false}, 'playPause')
-  stopwatch({}, 'reset')
-  noConnection(true)
-}
-
-window.onbeforeunload = () => {
-  maxSocket.onclose()
-  maxSocket.close()
-}
+    
+  const noConnection = (mode = true) => {
+    document.getElementById('noConnection').style.display = mode ? 'block' : 'none'
+  }
+  
+  const maxSocket = new reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_2___default.a(`ws://${window.location.hostname}:7474`)
+  
+  maxSocket.timeoutInterval = constants.reconnectAttemptInterval
+  
+  maxSocket.onopen = (event) => {
+    noConnection(false)
+  }
+  
+  maxSocket.onmessage = (event) => {
+    const {message, ...newState} = JSON.parse(event.data)
+    stopwatch(newState, message)
+  }
+  
+  maxSocket.onclose = (event) => {
+    const now = new Date().getTime()
+    stopwatch({play: false, start: now, stop: now}, 'playPause')
+    stopwatch({start: now, stop: now}, 'reset')
+    noConnection(true)
+  }
+  
+  window.onbeforeunload = () => {
+    maxSocket.onclose()
+    maxSocket.close()
+  }
 
 /***/ }),
 

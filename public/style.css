@@ -4,22 +4,9 @@ html, body {
 }
 
 :root {
-  --main-color: black;
-  --main-bg-color: white;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --main-color: black;
-    --main-bg-color: white;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --main-color: white;
-    --main-bg-color: black;
-  }
+  --main-color: white;
+  --main-bg-color: black;
+  --main-font: Menlo, Monaco, "Courier New", monospace;
 }
 
 .container {
@@ -35,7 +22,8 @@ html, body {
 
 #time {
   text-align: center;
-  font-size: 18vw;
+  font-size: 13vw;
+  font-family: var(--main-font);
 }
 
 #message {
@@ -47,7 +35,8 @@ html, body {
   /* height: 50px; */
   color: var(--main-color);
   background-color: var(--main-bg-color);
-  font-size: 4vw;
+  font-size: 3vw;
+  font-family: var(--main-font);
 }
 
 #noConnection {
@@ -75,9 +64,18 @@ html, body {
   color: var(--main-color);
   background-color: var(--main-bg-color);
   font-size: 4vw;
+  font-family: var(--main-font);
   position: absolute;
   top: 3vh;
   margin: auto;
   text-align: center;
   width: 100%;
+}
+
+.disable-select {
+  user-select: none; /* supported by Chrome and Opera */
+ -webkit-user-select: none; /* Safari */
+ -khtml-user-select: none; /* Konqueror HTML */
+ -moz-user-select: none; /* Firefox */
+ -ms-user-select: none; /* Internet Explorer/Edge */
 }

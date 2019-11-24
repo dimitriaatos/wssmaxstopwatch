@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const Max = require('max-api')
 
-const state = require('./src/server/state')
+const {server, constants} = require('./src/server/state')
 const copyUrl = require('./src/server/copyUrl')
 require('./src/server/handlers')()
 
@@ -14,7 +14,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'))
 })
 
-app.listen(state.port, () => {
-	Max.outlet(['url', state.url])
+app.listen(server.port, () => {
+	Max.outlet(['url', server.url])
 	copyUrl()
 })

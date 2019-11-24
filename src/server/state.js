@@ -1,12 +1,20 @@
 const ip = require('ip')
 
-const state = {
+const server = {
 	port: 3000,
 	ip: ip.address(),
-	start: undefined,
-	stop: undefined,
-	play: false,
 }
-state.url = `http://${state.ip}:${state.port}/`
 
-module.exports =  state
+const state = {
+	start: 0,
+	stop: 0,
+	play: false,
+	format: 'hh:mm:ss:d0',
+}
+
+const constants = {
+	max : 356400000,
+}
+server.url = `http://${server.ip}:${server.port}/`
+
+module.exports = {state, constants, server}

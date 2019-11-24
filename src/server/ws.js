@@ -1,10 +1,11 @@
 const Max = require('max-api')
 const WebSocket = require('ws')
-const state = require('./state')
+const {state} = require('./state')
 
 const wss = new WebSocket.Server({ port: 7474 })
 
 const broadcast = (data, ws) => {
+	data = JSON.stringify(data)
 	if (ws === undefined) {		
 		wss.clients.forEach(ws => {
 			ws.send(data)
@@ -16,11 +17,10 @@ const broadcast = (data, ws) => {
 
 wss.on('connection', (ws, req) => {
 	Max.post('New device connected')
-	broadcast(JSON.stringify({
-		start: state.start,
-		play: state.play,
+	broadcast({
+		...state,
 		message: 'playPause',
-	}), ws)
+	}, ws)
 
 	ws.on('message', (message) => {Max.post(message)})
 

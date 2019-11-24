@@ -1,39 +1,62 @@
 const Max = require('max-api')
-const state = require('./state')
+const {state, constants, server} = require('./state')
 const {broadcast} = require('./ws')
 const copyUrl = require('./copyUrl')
 
 module.exports = () => {
+
   Max.addHandler('play', (toggle) => {
-  
     if (state.play != toggle) {
       state.play = !!toggle
-      let timestamp = new Date().getTime()
+      const now = new Date().getTime()
       if (state.play) {
-        if (state.start != undefined && state.stop != undefined) {
-          timestamp = timestamp - (state.stop - state.start)
-        }
-        state.start = timestamp
+        state.start = now - (state.stop - state.start)
+        state.stop = undefined
       } else {
-        state.stop = timestamp
+        state.stop = now
       }
-      broadcast(JSON.stringify({
-        start: state.start,
-        play: state.play,
+      broadcast({
+        ...state,
         message: 'playPause',
-      }))
+      })
     }
   })
   
   Max.addHandler(Max.MESSAGE_TYPES.BANG, () => {
+    state.start = state.stop = new Date().getTime()
   
-    state.start = new Date().getTime()
-    state.stop = undefined
-  
-    broadcast(JSON.stringify({
-      start: state.start,
+    broadcast({
+      ...state,
       message: 'reset',
-    }))
+    })
+  })
+
+  let prevMs
+
+  Max.addHandler('set', (ms) => {
+    ms = ms >= constants.max ? constants.max :
+      ms <= -constants.max ? -constants.max :
+      Math.round(ms)
+
+    if (prevMs != ms) {
+      const now = new Date().getTime()
+      state.start = now - ms
+      state.stop = now
+        
+      broadcast({
+        ...state,
+        message: 'reset',
+      })
+    }
+    prevMs = ms
+  })
+
+  Max.addHandler('format', (format) => {
+    state.format = format
+    broadcast({
+      ...state,
+      message: 'reset',
+    })
   })
   
   Max.addHandler('copy', () => {
@@ -41,6 +64,8 @@ module.exports = () => {
   })
   
   Max.addHandler('url', () => {
-    Max.outlet(['url', state.url])
+    Max.outlet(['url', server.url])
   })
+
+
 }
