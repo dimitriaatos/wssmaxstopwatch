@@ -1,20 +1,12 @@
-import noSleep from './noSleep'
+import './noSleep'
 import formatTime from './formatTime'
 import ReconnectingWebSocket from 'reconnectingwebsocket'
 import {toggleFullScreen} from './fullScreen'
+import {state, appState, constants} from './state'
 
-const state = {
-  format: 'hh:mm:ss:.d0',
-}
-
-const constants = {
-  updateTime: 50,
-  reconnectAttemptInterval: 2000,
-}
-
-document.addEventListener('dblclick', toggleFullScreen)
-
-noSleep(document.getElementById('message'))
+document.addEventListener('dblclick', () => {
+  appState.fullScreen = toggleFullScreen()
+})
 
 const displayTime = (time) => {
   document.getElementById('time').innerHTML = time
@@ -29,15 +21,15 @@ const handleTime = () => {
 let steps
 
 const stopwatch = (newState) => {
-  const playChange = state.play != newState.play
   Object.assign(state, newState)
 
-  if (playChange) {
-    steps = setInterval(handleTime, constants.updateTime)
-  } else {
+  if (state.play) {
     clearInterval(steps)
-    handleTime()
+    steps = setInterval(handleTime, constants.updateTime)
+  } else  {
+    clearInterval(steps)
   }
+  handleTime()
 }
     
   const noConnection = (mode = true) => {

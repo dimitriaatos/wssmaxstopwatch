@@ -1,7 +1,7 @@
 const ip = require('ip')
 
 const server = {
-	port: 3000,
+	port: 80,
 	ip: ip.address(),
 }
 

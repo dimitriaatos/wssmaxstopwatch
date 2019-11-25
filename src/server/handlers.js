@@ -17,7 +17,6 @@ module.exports = () => {
       }
       broadcast({
         ...state,
-        message: 'playPause',
       })
     }
   })
@@ -27,35 +26,28 @@ module.exports = () => {
   
     broadcast({
       ...state,
-      message: 'reset',
     })
   })
-
-  let prevMs
 
   Max.addHandler('set', (ms) => {
     ms = ms >= constants.max ? constants.max :
       ms <= -constants.max ? -constants.max :
       Math.round(ms)
 
-    if (prevMs != ms) {
-      const now = new Date().getTime()
-      state.start = now - ms
-      state.stop = now
-        
-      broadcast({
-        ...state,
-        message: 'reset',
-      })
-    }
-    prevMs = ms
+    const now = new Date().getTime()
+    state.start = now - ms
+    state.stop = now
+      
+    broadcast({
+      ...state,
+    })
+    
   })
 
   Max.addHandler('format', (format) => {
     state.format = format
     broadcast({
       ...state,
-      message: 'reset',
     })
   })
   

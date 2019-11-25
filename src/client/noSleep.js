@@ -1,6 +1,7 @@
 import NoSleep from 'nosleep.js'
+import interactionEvents from './interactionEvents.js'
 
-const noSleep = (noSleepButton) => {
+const preventFromSleeping = () => {
   let wakeLock
   if ('getWakeLock' in navigator) {
 
@@ -20,20 +21,23 @@ const noSleep = (noSleepButton) => {
     wakeLock = navigator.wakeLock.request('screen')
   } else {
     console.log('Wake Lock API not supported')
-    noSleepButton.style.display = 'block'
-    noSleep.noSleep = new NoSleep()
+    const noSleep = new NoSleep()
     const enableNoSleep = () => {
-      ['click', 'keydown'].forEach(event => {
-        noSleepButton.removeEventListener(event, enableNoSleep, false)
+      interactionEvents.forEach(event => {
+        document.removeEventListener(event, enableNoSleep, false)
       })
-      noSleepButton.style.display = 'none'
-      noSleep.noSleep.enable()
+      noSleep.enable()
+      console.log('noSleep enabled')
+      
     }
-    window.addEventListener('click', enableNoSleep, false)
-    window.addEventListener('keydown', enableNoSleep, false)
+    interactionEvents.forEach(event => {
+      document.addEventListener(event, enableNoSleep, false)
+    })
   }
 
   return wakeLock
 }
 
-export default noSleep
+preventFromSleeping()
+
+// export default noSleep

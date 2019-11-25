@@ -19,7 +19,6 @@ wss.on('connection', (ws, req) => {
 	Max.post('New device connected')
 	broadcast({
 		...state,
-		message: 'playPause',
 	}, ws)
 
 	ws.on('message', (message) => {Max.post(message)})

@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const Max = require('max-api')
 
-const {server, constants} = require('./src/server/state')
+const {server} = require('./src/server/state')
 const copyUrl = require('./src/server/copyUrl')
 require('./src/server/handlers')()
 

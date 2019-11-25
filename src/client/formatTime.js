@@ -1,3 +1,5 @@
+import {floorPrecision} from './helpers'
+
 const calcs = Object.entries({
   h: [1000 * 60 * 60, 24],
   m: [1000 * 60, 60],
@@ -8,6 +10,15 @@ const calcs = Object.entries({
   accum[name] = {divider, modulo}
   return accum
 }, {})
+
+const smallest = (time, format) => {
+  const small = Object.keys(calcs).reduce((accum, key) => {
+    const index = format.search(new RegExp(key))
+    return index >= 0 ? format[index] : accum
+  }, format)
+  const div = calcs[small]
+  return floorPrecision(time, div.divider)
+}
 
 const formatDigits = (pTime, pFormat) => {
   const numDigits = pFormat.length
@@ -21,7 +32,7 @@ const formatTime = (time, format) => (
       new RegExp(`${key}+`, 'g'),
       // new RegExp(`(^|[^\\\\])${key}+`, 'g'),
       (...args) => {
-        return formatDigits(Math.abs(time), args[0])
+        return formatDigits(Math.abs(smallest(time, format)), args[0])
       }
     )
   ), format)
