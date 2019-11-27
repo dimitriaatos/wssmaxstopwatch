@@ -861,7 +861,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "appState", function() { return appState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "constants", function() { return constants; });
 const state = {
-  format: 'hh:mm:ss:.d0',
 }
 
 const appState = {

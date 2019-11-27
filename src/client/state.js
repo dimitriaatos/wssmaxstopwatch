@@ -1,5 +1,4 @@
 const state = {
-  format: 'hh:mm:ss:.d0',
 }
 
 const appState = {

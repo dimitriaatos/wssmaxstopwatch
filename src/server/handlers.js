@@ -2,6 +2,7 @@ const Max = require('max-api')
 const {state, constants, server} = require('./state')
 const {broadcast} = require('./ws')
 const copyUrl = require('./copyUrl')
+const listen = require('./server')
 
 module.exports = () => {
 
@@ -56,8 +57,13 @@ module.exports = () => {
   })
   
   Max.addHandler('url', () => {
-    Max.outlet(['url', server.url])
+    Max.outlet(['url', server.getURL()])
   })
 
+  Max.addHandler('port', (port) => {
+    server.port = port
+    server.service.close()
+    server.service = listen()
+  })
 
 }
