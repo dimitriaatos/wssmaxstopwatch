@@ -2,7 +2,8 @@
 A Node for Max project that hosts locally a stopwatch website, controlled via Max.
 
 ##Motivation
-Improvisation ensamples often need to keep track of the length of their pieces while playing, this project was 
+Musical ensamples often need to keep track of the length of their performances while playing, that is typically done with multiple stopwatches, however, starting and stopping them synchronously might get tedious especially when rehearsing, this project is aiming to ease that process.
+
 ##Examples
 Open `stopwatch.maxpat` file.
 
