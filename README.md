@@ -13,4 +13,4 @@ Open `stopwatch.maxpat` file.
 - Prevents device from sleeping
 
 ## Development
-This project's front end code is handled by webpack, if you wish to edit it make sure you edit the files in the `src` folder and run `npm start` on the project's root path before testing.
+This project's front end (client) JavaScript code is handled by webpack, if you wish to edit it make sure you edit the files in the `src` folder and run `npm start` on the project's root path before testing.
