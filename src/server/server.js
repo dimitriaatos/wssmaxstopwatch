@@ -1,7 +1,6 @@
 const Max = require('max-api')
 
 const {server} = require('./state')
-const copyUrl = require('./copyUrl')
 
 const express = require('express')
 const path = require('path')
@@ -14,10 +13,9 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'))
 })
 
-
 const listen = () => app.listen(server.port, () => {
   Max.outlet(['url', server.getURL()])
-  copyUrl()
+  Max.post(`Listening on ${server.getURL()}`)
 })
 
 module.exports = listen

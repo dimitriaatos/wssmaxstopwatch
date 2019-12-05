@@ -1,4 +1,4 @@
-import interactionEvents from './interactionEvents.js'
+import uiEventNames from './uiEventNames.js'
 import {constants} from './state'
 
 export const toggleFullScreen = () => {
@@ -31,6 +31,6 @@ const hideCursor = () => {
   )
 }
 
-interactionEvents.forEach(event => {
+uiEventNames.forEach(event => {
   document.addEventListener(event, hideCursor, false)
 }) 

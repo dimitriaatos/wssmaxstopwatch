@@ -1,4 +1,4 @@
-const interactionEvents = [
+const uiEventNames = [
   'mousemove',
   'mousedown',
   'keypress',
@@ -8,4 +8,4 @@ const interactionEvents = [
   'MSPointerMove',
 ]
 
-export default interactionEvents
+export default uiEventNames

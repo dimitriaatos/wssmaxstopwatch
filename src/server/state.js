@@ -9,22 +9,15 @@ const serverClass = function(init) {
 
 	Object.assign(this, init)
 	this.getURL = () => {
-		return `http://${this.ip}:${this.port}/`
+		return `http://${this.ip}${this.port == 80 ? '' : `:${this.port}`}/`
 	}
 
 }
 
 const server = new serverClass(initServer)
 
-const state = {
-	start: 0,
-	stop: 0,
-	play: false,
-	format: 'hh:mm:ss.d0',
-}
-
 const constants = {
-	max : 356400000,
+	updateTime: 50,
 }
 
-module.exports = {state, constants, server}
+module.exports = {constants, server}

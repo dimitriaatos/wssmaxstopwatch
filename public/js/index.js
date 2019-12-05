@@ -562,17 +562,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./src/client/formatTime.js":
-/*!**********************************!*\
-  !*** ./src/client/formatTime.js ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./node_modules/syncwatch/src/formatTime.js":
+/*!**************************************************!*\
+  !*** ./node_modules/syncwatch/src/formatTime.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers */ "./src/client/helpers.js");
-
+// import {floorPrecision} from './helpers'
+const floorPrecision = (x, precision) => x - (x<0 ? precision : 0 + (x % precision))
 
 const calcs = Object.entries({
   h: [1000 * 60 * 60, 24],
@@ -591,7 +589,7 @@ const smallest = (time, format) => {
     return index >= 0 ? format[index] : accum
   }, format)
   const div = calcs[small]
-  return Object(_helpers__WEBPACK_IMPORTED_MODULE_0__["floorPrecision"])(time, div.divider)
+  return floorPrecision(time, div.divider)
 }
 
 const formatDigits = (pTime, pFormat) => {
@@ -613,9 +611,114 @@ const formatTime = (time, format) => (
   
 )
 
-/* harmony default export */ __webpack_exports__["default"] = (formatTime);
+// export default formatTime
+module.exports = formatTime
 
 // console.log(formatTime(7740000, 'hh:mm:ss:d0'))
+
+/***/ }),
+
+/***/ "./node_modules/syncwatch/src/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/syncwatch/src/index.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const formatTime = __webpack_require__(/*! ./formatTime */ "./node_modules/syncwatch/src/formatTime.js")
+
+const Stopwatch = class {
+  
+  constructor(cb, options = {}) {
+    
+    this._playing = false
+    this.start = 0
+    this.stop = 0
+    this.format = 'hh:mm:ss.d0'
+    this.max = 100 * 60 * 60 * 1000 - 1 // 359999999
+    this._callback = () => {}
+    this.updateTime = 50
+    this._steps
+    
+    this.callback(cb)
+    Object.assign(this, options)
+  }
+  
+  get ms() {return (this.playing ? new Date().getTime() : this.stop) - this.start}
+  
+  get formatted() {return formatTime(this.ms, this.format)}
+
+  update(newState) {
+    const {playing, ...rest} = newState
+    Object.assign(this, rest)
+    this._playing != playing ?
+      this.playing = playing :
+      this._callback(this)
+  }
+
+  callback(cb) {
+    this._callback = (t) => {
+      cb && cb(t)
+    }
+  }
+
+  output() {
+    return (({playing, start, stop, format, updateTime, max}) => ({playing, start, stop, format, updateTime, max}))(this)
+  }
+
+  set playing(state) {
+    if (this._playing != state) {
+      this._playing = state != 0
+      if (this._playing) {
+        clearInterval(this._steps)
+        this._steps = setInterval(() => {
+          this._callback(this)
+        }, this.updateTime)
+      } else  {
+        clearInterval(this._steps)
+      }
+      this._callback(this)
+      return this._playing
+    }
+  }
+
+  get playing() {
+    return this._playing
+  }
+
+  play(state) {
+    const now = new Date().getTime()
+    if (state) {
+      this.start = now - (this.stop - this.start)
+      this.stop = undefined
+    } else {
+      this.stop = now
+    }
+    this.playing = state != 0
+    return this.output()
+  }
+
+  reset(ms) {
+    if (ms != undefined) {
+      ms = Math.round(Math.min(Math.max(ms, -this.max), this.max))
+      this.stop = new Date().getTime()
+      this.start = this.stop - ms
+    } else {
+      this.start = this.stop = new Date().getTime()
+    }
+    this._callback(this)
+    return this.output()
+  }
+  
+}
+
+module.exports = Stopwatch
+
+// const stopwatch = new Stopwatch(time => {
+//   console.log(time.formated)
+// })
+
+// stopwatch.play(true)
 
 /***/ }),
 
@@ -629,7 +732,7 @@ const formatTime = (time, format) => (
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toggleFullScreen", function() { return toggleFullScreen; });
-/* harmony import */ var _interactionEvents_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./interactionEvents.js */ "./src/client/interactionEvents.js");
+/* harmony import */ var _uiEventNames_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./uiEventNames.js */ "./src/client/uiEventNames.js");
 /* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./state */ "./src/client/state.js");
 
 
@@ -664,26 +767,9 @@ const hideCursor = () => {
   )
 }
 
-_interactionEvents_js__WEBPACK_IMPORTED_MODULE_0__["default"].forEach(event => {
+_uiEventNames_js__WEBPACK_IMPORTED_MODULE_0__["default"].forEach(event => {
   document.addEventListener(event, hideCursor, false)
 }) 
-
-/***/ }),
-
-/***/ "./src/client/helpers.js":
-/*!*******************************!*\
-  !*** ./src/client/helpers.js ***!
-  \*******************************/
-/*! exports provided: pipeFunctions, floorPrecision */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pipeFunctions", function() { return pipeFunctions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "floorPrecision", function() { return floorPrecision; });
-const pipeFunctions = (...fns) => fns.reduce((f, g) => (...args) => g(f(...args)))
-
-const floorPrecision = (x, precision) => x - (x<0 ? precision : 0 + (x % precision))
 
 /***/ }),
 
@@ -697,96 +783,54 @@ const floorPrecision = (x, precision) => x - (x<0 ? precision : 0 + (x % precisi
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _noSleep__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./noSleep */ "./src/client/noSleep.js");
-/* harmony import */ var _formatTime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatTime */ "./src/client/formatTime.js");
-/* harmony import */ var reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! reconnectingwebsocket */ "./node_modules/reconnectingwebsocket/reconnecting-websocket.js");
-/* harmony import */ var reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _fullScreen__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fullScreen */ "./src/client/fullScreen.js");
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./state */ "./src/client/state.js");
+/* harmony import */ var reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! reconnectingwebsocket */ "./node_modules/reconnectingwebsocket/reconnecting-websocket.js");
+/* harmony import */ var reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _fullScreen__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fullScreen */ "./src/client/fullScreen.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./state */ "./src/client/state.js");
+/* harmony import */ var syncwatch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! syncwatch */ "./node_modules/syncwatch/src/index.js");
+/* harmony import */ var syncwatch__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(syncwatch__WEBPACK_IMPORTED_MODULE_4__);
 
 
 
 
 
 
-document.addEventListener('dblclick', () => {
-  _state__WEBPACK_IMPORTED_MODULE_4__["appState"].fullScreen = Object(_fullScreen__WEBPACK_IMPORTED_MODULE_3__["toggleFullScreen"])()
+['dblclick', 'keydown'].forEach(eventName => {
+  document.addEventListener(eventName, ({type, code}) => {
+    _state__WEBPACK_IMPORTED_MODULE_3__["appState"].fullScreen = (type == 'keydown') == (code == 'KeyF') && Object(_fullScreen__WEBPACK_IMPORTED_MODULE_2__["toggleFullScreen"])()
+  })
 })
 
-const displayTime = (time) => {
-  document.getElementById('time').innerHTML = time
+const watch = new syncwatch__WEBPACK_IMPORTED_MODULE_4___default.a(time => {
+  document.getElementById('time').innerHTML = time.formatted
+})
+
+const noConnection = (mode = true) => {
+  document.getElementById('noConnection').style.display = mode ? 'block' : 'none'
 }
 
-const getDistance = () => (_state__WEBPACK_IMPORTED_MODULE_4__["state"].play ? new Date().getTime() : _state__WEBPACK_IMPORTED_MODULE_4__["state"].stop) - _state__WEBPACK_IMPORTED_MODULE_4__["state"].start
+const maxSocket = new reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_1___default.a(`ws://${window.location.hostname}:7474`)
 
-const handleTime = () => {
-  displayTime(Object(_formatTime__WEBPACK_IMPORTED_MODULE_1__["default"])(getDistance(), _state__WEBPACK_IMPORTED_MODULE_4__["state"].format))
+maxSocket.timeoutInterval = _state__WEBPACK_IMPORTED_MODULE_3__["constants"].reconnectAttemptInterval
+
+maxSocket.onopen = (event) => {
+  noConnection(false)
 }
 
-let steps
-
-const stopwatch = (newState) => {
-  Object.assign(_state__WEBPACK_IMPORTED_MODULE_4__["state"], newState)
-
-  if (_state__WEBPACK_IMPORTED_MODULE_4__["state"].play) {
-    clearInterval(steps)
-    steps = setInterval(handleTime, _state__WEBPACK_IMPORTED_MODULE_4__["constants"].updateTime)
-  } else  {
-    clearInterval(steps)
-  }
-  handleTime()
+maxSocket.onmessage = (event) => {
+  watch.update(JSON.parse(event.data))
 }
-    
-  const noConnection = (mode = true) => {
-    document.getElementById('noConnection').style.display = mode ? 'block' : 'none'
-  }
-  
-  const maxSocket = new reconnectingwebsocket__WEBPACK_IMPORTED_MODULE_2___default.a(`ws://${window.location.hostname}:7474`)
-  
-  maxSocket.timeoutInterval = _state__WEBPACK_IMPORTED_MODULE_4__["constants"].reconnectAttemptInterval
-  
-  maxSocket.onopen = (event) => {
-    noConnection(false)
-  }
-  
-  maxSocket.onmessage = (event) => {
-    const {message, ...newState} = JSON.parse(event.data)
-    stopwatch(newState, message)
-  }
-  
-  maxSocket.onclose = (event) => {
-    const now = new Date().getTime()
-    stopwatch({play: false, start: now, stop: now}, 'playPause')
-    stopwatch({start: now, stop: now}, 'reset')
-    noConnection(true)
-  }
-  
-  window.onbeforeunload = () => {
-    maxSocket.onclose()
-    maxSocket.close()
-  }
 
-/***/ }),
+maxSocket.onclose = (event) => {
+  const now = new Date().getTime()
+  watch.update({playing: false, start: now, stop: now})
+  noConnection(true)
+}
 
-/***/ "./src/client/interactionEvents.js":
-/*!*****************************************!*\
-  !*** ./src/client/interactionEvents.js ***!
-  \*****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-const interactionEvents = [
-  'mousemove',
-  'mousedown',
-  'keypress',
-  'DOMMouseScroll',
-  'mousewheel',
-  'touchmove',
-  'MSPointerMove',
-]
-
-/* harmony default export */ __webpack_exports__["default"] = (interactionEvents);
+window.onbeforeunload = () => {
+  maxSocket.onclose()
+  maxSocket.close()
+}
 
 /***/ }),
 
@@ -801,7 +845,7 @@ const interactionEvents = [
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var nosleep_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! nosleep.js */ "./node_modules/nosleep.js/src/index.js");
 /* harmony import */ var nosleep_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(nosleep_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _interactionEvents_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./interactionEvents.js */ "./src/client/interactionEvents.js");
+/* harmony import */ var _uiEventNames_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./uiEventNames.js */ "./src/client/uiEventNames.js");
 
 
 
@@ -827,14 +871,14 @@ const preventFromSleeping = () => {
     console.log('Wake Lock API not supported')
     const noSleep = new nosleep_js__WEBPACK_IMPORTED_MODULE_0___default.a()
     const enableNoSleep = () => {
-      _interactionEvents_js__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(event => {
+      _uiEventNames_js__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(event => {
         document.removeEventListener(event, enableNoSleep, false)
       })
       noSleep.enable()
       console.log('noSleep enabled')
       
     }
-    _interactionEvents_js__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(event => {
+    _uiEventNames_js__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(event => {
       document.addEventListener(event, enableNoSleep, false)
     })
   }
@@ -852,17 +896,13 @@ preventFromSleeping()
 /*!*****************************!*\
   !*** ./src/client/state.js ***!
   \*****************************/
-/*! exports provided: state, appState, constants */
+/*! exports provided: appState, constants */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "state", function() { return state; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "appState", function() { return appState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "constants", function() { return constants; });
-const state = {
-}
-
 const appState = {
   fullScreen: false,
 }
@@ -874,6 +914,29 @@ const constants = {
 }
 
 
+
+/***/ }),
+
+/***/ "./src/client/uiEventNames.js":
+/*!************************************!*\
+  !*** ./src/client/uiEventNames.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const uiEventNames = [
+  'mousemove',
+  'mousedown',
+  'keypress',
+  'DOMMouseScroll',
+  'mousewheel',
+  'touchmove',
+  'MSPointerMove',
+]
+
+/* harmony default export */ __webpack_exports__["default"] = (uiEventNames);
 
 /***/ })
 

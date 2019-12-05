@@ -1,62 +1,42 @@
 import './noSleep'
-import formatTime from './formatTime'
 import ReconnectingWebSocket from 'reconnectingwebsocket'
 import {toggleFullScreen} from './fullScreen'
-import {state, appState, constants} from './state'
+import {appState, constants} from './state'
+import SyncWatch from 'syncwatch'
 
-document.addEventListener('dblclick', () => {
-  appState.fullScreen = toggleFullScreen()
+['dblclick', 'keydown'].forEach(eventName => {
+  document.addEventListener(eventName, ({type, code}) => {
+    appState.fullScreen = (type == 'keydown') == (code == 'KeyF') && toggleFullScreen()
+  })
 })
 
-const displayTime = (time) => {
-  document.getElementById('time').innerHTML = time
+const watch = new SyncWatch(time => {
+  document.getElementById('time').innerHTML = time.formatted
+})
+
+const noConnection = (mode = true) => {
+  document.getElementById('noConnection').style.display = mode ? 'block' : 'none'
 }
 
-const getDistance = () => (state.play ? new Date().getTime() : state.stop) - state.start
+const maxSocket = new ReconnectingWebSocket(`ws://${window.location.hostname}:7474`)
 
-const handleTime = () => {
-  displayTime(formatTime(getDistance(), state.format))
+maxSocket.timeoutInterval = constants.reconnectAttemptInterval
+
+maxSocket.onopen = (event) => {
+  noConnection(false)
 }
 
-let steps
-
-const stopwatch = (newState) => {
-  Object.assign(state, newState)
-
-  if (state.play) {
-    clearInterval(steps)
-    steps = setInterval(handleTime, constants.updateTime)
-  } else  {
-    clearInterval(steps)
-  }
-  handleTime()
+maxSocket.onmessage = (event) => {
+  watch.update(JSON.parse(event.data))
 }
-    
-  const noConnection = (mode = true) => {
-    document.getElementById('noConnection').style.display = mode ? 'block' : 'none'
-  }
-  
-  const maxSocket = new ReconnectingWebSocket(`ws://${window.location.hostname}:7474`)
-  
-  maxSocket.timeoutInterval = constants.reconnectAttemptInterval
-  
-  maxSocket.onopen = (event) => {
-    noConnection(false)
-  }
-  
-  maxSocket.onmessage = (event) => {
-    const {message, ...newState} = JSON.parse(event.data)
-    stopwatch(newState, message)
-  }
-  
-  maxSocket.onclose = (event) => {
-    const now = new Date().getTime()
-    stopwatch({play: false, start: now, stop: now}, 'playPause')
-    stopwatch({start: now, stop: now}, 'reset')
-    noConnection(true)
-  }
-  
-  window.onbeforeunload = () => {
-    maxSocket.onclose()
-    maxSocket.close()
-  }
+
+maxSocket.onclose = (event) => {
+  const now = new Date().getTime()
+  watch.update({playing: false, start: now, stop: now})
+  noConnection(true)
+}
+
+window.onbeforeunload = () => {
+  maxSocket.onclose()
+  maxSocket.close()
+}

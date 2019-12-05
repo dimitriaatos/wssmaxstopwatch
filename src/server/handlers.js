@@ -1,55 +1,29 @@
 const Max = require('max-api')
-const {state, constants, server} = require('./state')
+const {server} = require('./state')
 const {broadcast} = require('./ws')
 const copyUrl = require('./copyUrl')
 const listen = require('./server')
+const serverWatch = require('./serverWatch')
 
 module.exports = () => {
 
   Max.addHandler('play', (toggle) => {
-    if (state.play != toggle) {
-      state.play = !!toggle
-      const now = new Date().getTime()
-      if (state.play) {
-        state.start = now - (state.stop - state.start)
-        state.stop = undefined
-      } else {
-        state.stop = now
-      }
-      broadcast({
-        ...state,
-      })
+    if (serverWatch.playing != toggle) {
+      broadcast(serverWatch.play(toggle))
     }
   })
   
   Max.addHandler(Max.MESSAGE_TYPES.BANG, () => {
-    state.start = state.stop = new Date().getTime()
-  
-    broadcast({
-      ...state,
-    })
+    broadcast(serverWatch.reset())
   })
 
   Max.addHandler('set', (ms) => {
-    ms = ms >= constants.max ? constants.max :
-      ms <= -constants.max ? -constants.max :
-      Math.round(ms)
-
-    const now = new Date().getTime()
-    state.start = now - ms
-    state.stop = now
-      
-    broadcast({
-      ...state,
-    })
-    
+    broadcast(serverWatch.reset(ms))
   })
 
   Max.addHandler('format', (format) => {
-    state.format = format
-    broadcast({
-      ...state,
-    })
+    serverWatch.format = format
+    broadcast(serverWatch.output())
   })
   
   Max.addHandler('copy', () => {

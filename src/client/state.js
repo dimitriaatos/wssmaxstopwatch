@@ -1,6 +1,3 @@
-const state = {
-}
-
 const appState = {
   fullScreen: false,
 }
@@ -11,4 +8,4 @@ const constants = {
   idleMouseTime: 2000,
 }
 
-export {state, appState, constants}
+export {appState, constants}
