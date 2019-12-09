@@ -1,20 +1,12 @@
 const ip = require('ip')
 
-const initServer = {
+const server = {
 	port: 8080,
 	ip: ip.address(),
-}
-
-const serverClass = function(init) {
-
-	Object.assign(this, init)
-	this.getURL = () => {
+	get url() {
 		return `http://${this.ip}${this.port == 80 ? '' : `:${this.port}`}/`
 	}
-
 }
-
-const server = new serverClass(initServer)
 
 const constants = {
 	updateTime: 50,

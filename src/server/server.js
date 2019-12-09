@@ -14,8 +14,8 @@ app.get('*', (req, res) => {
 })
 
 const listen = () => app.listen(server.port, () => {
-  Max.outlet(['url', server.getURL()])
-  Max.post(`Listening on ${server.getURL()}`)
+  Max.outlet(['url', server.url])
+  Max.post(`Listening on ${server.url}`)
 })
 
 module.exports = listen

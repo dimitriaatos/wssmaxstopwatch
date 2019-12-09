@@ -9,7 +9,7 @@ module.exports = () => {
 
   Max.addHandler('play', (toggle) => {
     if (serverWatch.playing != toggle) {
-      broadcast(serverWatch.play(toggle))
+      broadcast(serverWatch.toggle(toggle))
     }
   })
   
@@ -31,7 +31,7 @@ module.exports = () => {
   })
   
   Max.addHandler('url', () => {
-    Max.outlet(['url', server.getURL()])
+    Max.outlet(['url', server.url])
   })
 
   Max.addHandler('port', (port) => {

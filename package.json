@@ -12,10 +12,13 @@
   "dependencies": {
     "clipboardy": "^2.1.0",
     "express": "~4.15.2",
+    "fullscreen.js": "github:tt-ghost/fullscreen.js#pull/2/head",
+    "hide-mouse": "^2.0.2",
     "ip": "^1.1.5",
     "nosleep.js": "github:ViRPo/NoSleep.js",
     "reconnectingwebsocket": "^1.0.0",
     "syncwatch": "github:dimitriaatos/syncwatch",
+    "uievents": "github:dimitriaatos/uievents",
     "ws": "^4.0.0"
   },
   "devDependencies": {

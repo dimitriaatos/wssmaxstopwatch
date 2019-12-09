@@ -1,5 +1,5 @@
 import NoSleep from 'nosleep.js'
-import uiEventNames from './uiEventNames.js'
+import {uiEventListener} from 'uievents'
 
 const preventFromSleeping = () => {
   let wakeLock
@@ -22,16 +22,9 @@ const preventFromSleeping = () => {
   } else {
     console.log('Wake Lock API not supported')
     const noSleep = new NoSleep()
-    const enableNoSleep = () => {
-      uiEventNames.forEach(event => {
-        document.removeEventListener(event, enableNoSleep, false)
-      })
+    uiEventListener(() => {
       noSleep.enable()
       console.log('noSleep enabled')
-      
-    }
-    uiEventNames.forEach(event => {
-      document.addEventListener(event, enableNoSleep, false)
     })
   }
 
