@@ -18,6 +18,7 @@
     "nosleep.js": "github:ViRPo/NoSleep.js",
     "reconnectingwebsocket": "^1.0.0",
     "syncwatch": "github:dimitriaatos/syncwatch",
+    "timesync": "^1.0.4",
     "uievents": "github:dimitriaatos/uievents",
     "ws": "^4.0.0"
   },

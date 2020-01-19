@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 79.0, 724.0, 276.0 ],
+		"rect" : [ 34.0, 56.0, 722.0, 283.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -56,8 +56,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 326.5, 240.0, 87.0, 22.0 ],
-					"text" : "0 0 9 909"
+					"patching_rect" : [ 323.5, 240.0, 90.0, 22.0 ]
 				}
 
 			}
@@ -755,7 +754,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 50.0, 100.0, 116.0, 35.0 ],
-									"text" : "http://192.168.1.2:8080/"
+									"text" : "http://192.168.1.5:8080/"
 								}
 
 							}
@@ -901,8 +900,6 @@
 									"saved_object_attributes" : 									{
 										"autostart" : 0,
 										"defer" : 0,
-										"node_bin_path" : "",
-										"npm_bin_path" : "",
 										"watch" : 0
 									}
 ,
@@ -1032,6 +1029,8 @@
 					"saved_object_attributes" : 					{
 						"autostart" : 0,
 						"defer" : 0,
+						"node_bin_path" : "",
+						"npm_bin_path" : "",
 						"watch" : 0
 					}
 ,
@@ -1323,7 +1322,7 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "ws max stopwatch",
-				"bootpath" : "~/Documents/WebDesign",
+				"bootpath" : "~/Documents/WebDev",
 				"patcherrelativepath" : "..",
 				"type" : "fold",
 				"implicit" : 1

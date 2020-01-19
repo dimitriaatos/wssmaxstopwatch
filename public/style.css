@@ -1,12 +1,14 @@
-html, body {
-  height: 100%;
-  margin: 0px;
-}
 
 :root {
-  --main-color: white;
+	--main-color: white;
   --main-bg-color: black;
   --main-font: Menlo, Monaco, "Courier New", monospace;
+}
+
+html, body {
+	height: 100%;
+	margin: 0px;
+	background-color: var(--main-bg-color);
 }
 
 .container {

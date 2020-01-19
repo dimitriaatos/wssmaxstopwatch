@@ -7,37 +7,37 @@ const serverWatch = require('./serverWatch')
 
 module.exports = () => {
 
-  Max.addHandler('play', (toggle) => {
-    if (serverWatch.playing != toggle) {
-      broadcast(serverWatch.toggle(toggle))
-    }
-  })
+	Max.addHandler('play', (toggle) => {
+		if (serverWatch.playing != toggle) {
+			broadcast(serverWatch.toggle(toggle))
+		}
+	})
   
-  Max.addHandler(Max.MESSAGE_TYPES.BANG, () => {
-    broadcast(serverWatch.reset())
-  })
+	Max.addHandler(Max.MESSAGE_TYPES.BANG, () => {
+		broadcast(serverWatch.reset())
+	})
 
-  Max.addHandler('set', (ms) => {
-    broadcast(serverWatch.reset(ms))
-  })
+	Max.addHandler('set', (ms) => {
+		broadcast(serverWatch.reset(ms))
+	})
 
-  Max.addHandler('format', (format) => {
-    serverWatch.format = format
-    broadcast(serverWatch.output())
-  })
+	Max.addHandler('format', (format) => {
+		serverWatch.format = format
+		broadcast(serverWatch.output())
+	})
   
-  Max.addHandler('copy', () => {
-    copyUrl()
-  })
+	Max.addHandler('copy', () => {
+		copyUrl()
+	})
   
-  Max.addHandler('url', () => {
-    Max.outlet(['url', server.url])
-  })
+	Max.addHandler('url', () => {
+		Max.outlet(['url', server.url])
+	})
 
-  Max.addHandler('port', (port) => {
-    server.port = port
-    server.service.close()
-    server.service = listen()
-  })
+	Max.addHandler('port', (port) => {
+		server.port = port
+		server.service.close()
+		server.service = listen()
+	})
 
 }
