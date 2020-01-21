@@ -28,9 +28,13 @@ fullScreenMouse.deactivate()
 
 const ts = timesync.create({
 	server: '/timesync',
-	delay: 2000,
-	interval: 10000
+	delay: 1000,
+	interval: 5000
 })
+
+setTimeout(() => {
+	ts.destroy()
+}, 10000)
 
 // Stopwatch
 const watch = new SyncWatch(time => {

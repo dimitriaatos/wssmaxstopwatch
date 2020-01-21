@@ -1,4 +1,4 @@
-const Max = require('max-api')
+const Max = require('max-api-or-not')
 
 const {server} = require('./state')
 
