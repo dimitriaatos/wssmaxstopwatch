@@ -63,10 +63,14 @@ maxSocket.onmessage = (event) => {
 }
 
 maxSocket.onclose = () => {
-	watch.toggle(false)
-	watch.reset()
+	// watch.toggle(false)
+	// watch.reset()
 	noConnection(true)
 }
+
+maxSocket.on('error', err => {
+	console.log(err)
+})
 
 window.onbeforeunload = () => {
 	maxSocket.onclose()

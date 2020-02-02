@@ -12,4 +12,4 @@ const constants = {
 	updateTime: 50,
 }
 
-module.exports = {constants, server}
+module.exports = {constants, server, init: {}}

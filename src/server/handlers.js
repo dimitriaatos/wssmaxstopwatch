@@ -8,22 +8,26 @@ const serverWatch = require('./serverWatch')
 module.exports = () => {
 
 	Max.addHandler('play', (toggle) => {
-		if (serverWatch.playing != toggle) {
+		if (serverWatch.playing !== toggle) {
 			broadcast(serverWatch.toggle(toggle))
 		}
+		Max.setDict('stopWatch', serverWatch.output())
 	})
   
 	Max.addHandler(Max.MESSAGE_TYPES.BANG, () => {
 		broadcast(serverWatch.reset())
+		Max.setDict('stopWatch', serverWatch.output())
 	})
 
 	Max.addHandler('set', (ms) => {
 		broadcast(serverWatch.reset(ms))
+		Max.setDict('stopWatch', serverWatch.output())
 	})
 
 	Max.addHandler('format', (format) => {
 		serverWatch.format = format
 		broadcast(serverWatch.output())
+		Max.setDict('stopWatch', serverWatch.output())
 	})
   
 	Max.addHandler('copy', () => {

@@ -15,7 +15,7 @@ const broadcast = (data, ws) => {
 	}
 }
 
-wss.on('connection', (ws, req) => {
+wss.on('connection', (ws) => {
 	Max.post('New device connected')
 	broadcast(serverWatch.output(), ws)
 

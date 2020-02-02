@@ -1,6 +1,82 @@
+/*!***********************************************************!*\
+  !*** ./node_modules/fullscreen.js/dist/fullscreen.min.js ***!
+  \***********************************************************/
+
+/*! no static exports found */
+
 /*!
  * fullscreen.js
  * version: 0.2.2
  * author: 橙子 <ttghost@126.com>
  * simple browser full screen library, compatible with common mainstream browsers
  */
+
+/*!********************************************************!*\
+  !*** ./node_modules/hide-mouse/dist/hide-mouse.min.js ***!
+  \********************************************************/
+
+/*!**********************************************!*\
+  !*** ./node_modules/nosleep.js/src/index.js ***!
+  \**********************************************/
+
+/*! ./media.js */
+
+/*!**********************************************!*\
+  !*** ./node_modules/nosleep.js/src/media.js ***!
+  \**********************************************/
+
+/*!**********************************************************************!*\
+  !*** ./node_modules/reconnectingwebsocket/reconnecting-websocket.js ***!
+  \**********************************************************************/
+
+/*!**************************************************!*\
+  !*** ./node_modules/syncwatch/src/formatTime.js ***!
+  \**************************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/syncwatch/src/index.js ***!
+  \*********************************************/
+
+/*! ./formatTime */
+
+/*!************************************************!*\
+  !*** ./node_modules/timesync/dist/timesync.js ***!
+  \************************************************/
+
+/*! ./../../webpack/buildin/global.js */
+
+/*!****************************************!*\
+  !*** ./node_modules/uievents/index.js ***!
+  \****************************************/
+
+/*! exports provided: uiEventNames, uiEventListener */
+
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+
+/*!*****************************!*\
+  !*** ./src/client/index.js ***!
+  \*****************************/
+
+/*! no exports provided */
+
+/*! ./noSleep */
+
+/*! reconnectingwebsocket */
+
+/*! fullscreen.js */
+
+/*! syncwatch */
+
+/*! hide-mouse */
+
+/*! timesync/dist/timesync */
+
+/*!*******************************!*\
+  !*** ./src/client/noSleep.js ***!
+  \*******************************/
+
+/*! nosleep.js */
+
+/*! uievents */

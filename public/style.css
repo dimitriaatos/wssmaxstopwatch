@@ -37,28 +37,14 @@ html, body {
   top: 0;
 }
 
-#noConnection .panel {
-  position: absolute;
-  text-align: center;
-  opacity: 0.5;
-  left: 1vw;
-  right: 1vw;
-  bottom: 1vh;
-  top: 1vh;
-  background-color: var(--main-bg-color);
-  color: var(--main-color);
-}
-
-#noConnection h1 {
-  color: var(--main-color);
-  background-color: var(--main-bg-color);
-  font-size: 4vw;
-  font-family: var(--main-font);
-  position: absolute;
-  top: 3vh;
-  margin: auto;
-  text-align: center;
-  width: 100%;
+#noConnection .ball {
+  background-color: var(--main-color);
+	position: fixed;
+	right: 10px;
+	top: 10px;
+	width: 20px;
+	height: 20px;
+	border-radius: 25px;
 }
 
 .disable-select {
