@@ -4,9 +4,9 @@
   "description": "",
   "main": "stopWatch.js",
   "scripts": {
-    "start": "npm run dev",
-		"build": "webpack --mode=production",
-		"dev": "webpack --watch --mode=development"
+    "start": "node stopWatch.js",
+    "build": "webpack --mode=production",
+    "dev": "webpack --watch --mode=development"
   },
   "author": "Dimitri Aatos Ellinas",
   "license": "CC-BY-4.0",
@@ -16,20 +16,20 @@
     "fullscreen.js": "github:tt-ghost/fullscreen.js#pull/2/head",
     "hide-mouse": "^2.0.2",
     "ip": "^1.1.5",
-    "max-api-or-not": "^1.0.0",
+    "max-api-or-not": "^1.1.0",
     "nosleep.js": "github:ViRPo/NoSleep.js",
     "reconnectingwebsocket": "^1.0.0",
     "syncwatch": "github:dimitriaatos/syncwatch",
-    "timesync": "^1.0.4",
+    "timesync": "^1.0.5",
     "uievents": "github:dimitriaatos/uievents",
     "ws": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
     "babel-loader": "^8.0.6",
-    "terser-webpack-plugin": "^2.3.2",
-    "webpack": "^4.41.2",
+    "terser-webpack-plugin": "^2.3.4",
+    "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
 }

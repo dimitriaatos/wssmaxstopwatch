@@ -26,6 +26,8 @@ wss.on('connection', (ws) => {
 		// ws.terminate()
 	})
 
+	ws.on('error', err => console.log(err))
+
 })
 
 process.on('exit', () => {

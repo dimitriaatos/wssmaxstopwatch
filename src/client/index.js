@@ -68,10 +68,6 @@ maxSocket.onclose = () => {
 	noConnection(true)
 }
 
-maxSocket.on('error', err => {
-	console.log(err)
-})
-
 window.onbeforeunload = () => {
 	maxSocket.onclose()
 	maxSocket.close()
