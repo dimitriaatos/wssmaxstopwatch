@@ -1,8 +1,9 @@
 const Max = require('max-api-or-not')
 const WebSocket = require('ws')
 const serverWatch = require('./serverWatch')
+const {server: {server}} = require('./state')
 
-const wss = new WebSocket.Server({ port: 7474 })
+const wss = new WebSocket.Server({ server })
 
 const broadcast = (data, ws) => {
 	data = JSON.stringify(data)

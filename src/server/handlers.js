@@ -1,8 +1,8 @@
 const Max = require('max-api-or-not')
 const {server} = require('./state')
-const {broadcast} = require('./ws')
 const copyUrl = require('./copyUrl')
 const listen = require('./server')
+const {broadcast} = require('./ws')
 const serverWatch = require('./serverWatch')
 
 module.exports = () => {

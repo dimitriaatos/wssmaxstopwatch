@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 64.0, 64.0, 869.0, 282.0 ],
+		"rect" : [ 64.0, 64.0, 876.0, 296.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -204,7 +204,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 433.0, 60.0, 53.0, 22.0 ],
+					"patching_rect" : [ 433.0, 60.0, 61.5, 22.0 ],
 					"text" : "* 60000."
 				}
 
@@ -214,11 +214,13 @@
 					"format" : 6,
 					"id" : "obj-34",
 					"maxclass" : "flonum",
+					"maximum" : 1439.999000000000024,
+					"minimum" : -1439.999000000000024,
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 433.0, 28.5, 53.0, 22.0 ]
+					"patching_rect" : [ 433.0, 28.5, 61.5, 22.0 ]
 				}
 
 			}
@@ -590,6 +592,8 @@
 				"box" : 				{
 					"id" : "obj-19",
 					"maxclass" : "number",
+					"maximum" : 59,
+					"minimum" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
@@ -602,6 +606,8 @@
 				"box" : 				{
 					"id" : "obj-17",
 					"maxclass" : "number",
+					"maximum" : 59,
+					"minimum" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
@@ -614,6 +620,8 @@
 				"box" : 				{
 					"id" : "obj-16",
 					"maxclass" : "number",
+					"maximum" : 23,
+					"minimum" : 0,
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],

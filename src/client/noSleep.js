@@ -11,7 +11,7 @@ const preventFromSleeping = () => {
 	} else if ('requestWakeLock' in navigator) {
 
 		wakeLock = navigator.requestWakeLock('screen')
-	} else if ('WakeLock' in window) {
+	} else if (typeof window.WakeLock == 'object') {
 
 		const controller = new AbortController()
 		const signal = controller.signal

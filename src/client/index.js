@@ -1,7 +1,7 @@
 import './noSleep'
 import ReconnectingWebSocket from 'reconnectingwebsocket'
 import fullScreen from 'fullscreen.js'
-import SyncWatch from 'syncwatch'
+import SyncWatch from '@dimitriaatos/syncwatch'
 import hideMouse from 'hide-mouse'
 const timesync = require('timesync/dist/timesync')
 
@@ -50,7 +50,7 @@ const noConnection = (mode = true) => {
 }
 
 // WebSocket connection
-const maxSocket = new ReconnectingWebSocket(`ws://${window.location.hostname}:7474`)
+const maxSocket = new ReconnectingWebSocket(`ws://${window.location.host}`)
 
 maxSocket.timeoutInterval = constants.reconnectAttemptInterval
 

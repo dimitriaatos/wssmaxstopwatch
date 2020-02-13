@@ -6,20 +6,21 @@
   "scripts": {
     "start": "node stopWatch.js",
     "build": "webpack --mode=production",
-    "dev": "webpack --watch --mode=development"
+    "dev": "webpack --watch --mode=development & nodemon stopWatch.js"
   },
   "author": "Dimitri Aatos Ellinas",
   "license": "CC-BY-4.0",
   "dependencies": {
-    "clipboardy": "^2.1.0",
-    "express": "~4.15.2",
+    "@dimitriaatos/syncwatch": "github:dimitriaatos/syncwatch",
+    "clipboardy": "^2.2.0",
+    "express": "^4.17.1",
     "fullscreen.js": "github:tt-ghost/fullscreen.js#pull/2/head",
     "hide-mouse": "^2.0.2",
     "ip": "^1.1.5",
-    "max-api-or-not": "^1.1.0",
+    "max-api-or-not": "^1.2.0",
     "nosleep.js": "github:ViRPo/NoSleep.js",
+    "opn": "^6.0.0",
     "reconnectingwebsocket": "^1.0.0",
-    "syncwatch": "github:dimitriaatos/syncwatch",
     "timesync": "^1.0.5",
     "uievents": "github:dimitriaatos/uievents",
     "ws": "^4.0.0"
@@ -29,7 +30,7 @@
     "@babel/preset-env": "^7.8.4",
     "babel-loader": "^8.0.6",
     "terser-webpack-plugin": "^2.3.4",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   }
 }
