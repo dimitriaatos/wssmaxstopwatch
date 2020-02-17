@@ -2,12 +2,12 @@ const path = require('path')
 const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
-	mode: 'production',
+	mode: 'development',
 	devtool: 'source-map',
-	entry: path.resolve(__dirname, 'src/client/index.js'),
+	entry: path.resolve(__dirname, './src/client/index.js'),
 	output: {
 		filename: 'index.js',
-		path: path.resolve(__dirname, 'public/js'),
+		path: path.resolve(__dirname, './public/js'),
 	},
 	module: { 
 		rules: [

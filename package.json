@@ -1,29 +1,25 @@
 {
-  "name": "wssmaxstopwatch",
+  "name": "max-syncwatch",
   "version": "1.0.0",
   "description": "",
   "main": "stopWatch.js",
   "scripts": {
     "start": "node stopWatch.js",
     "build": "webpack --mode=production",
-    "dev": "webpack --watch --mode=development & nodemon stopWatch.js"
+    "dev": "webpack --watch --mode=development",
+    "max": "open stopwatch.maxpat"
   },
   "author": "Dimitri Aatos Ellinas",
   "license": "CC-BY-4.0",
   "dependencies": {
-    "@dimitriaatos/syncwatch": "github:dimitriaatos/syncwatch",
-    "clipboardy": "^2.2.0",
     "express": "^4.17.1",
+    "clipboardy": "^2.2.0",
     "fullscreen.js": "github:tt-ghost/fullscreen.js#pull/2/head",
     "hide-mouse": "^2.0.2",
     "ip": "^1.1.5",
-    "max-api-or-not": "^1.2.0",
     "nosleep.js": "github:ViRPo/NoSleep.js",
-    "opn": "^6.0.0",
-    "reconnectingwebsocket": "^1.0.0",
-    "timesync": "^1.0.5",
     "uievents": "github:dimitriaatos/uievents",
-    "ws": "^4.0.0"
+    "@dimitriaatos/syncwatch": "github:dimitriaatos/syncwatch-full-stack"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

@@ -1,47 +1,44 @@
-const Max = require('max-api-or-not')
-const {server} = require('./state')
-const copyUrl = require('./copyUrl')
+const Max = require('max-api')
 const listen = require('./server')
-const {broadcast} = require('./ws')
-const serverWatch = require('./serverWatch')
+const state = require('./state')
+const clipboard = require('clipboardy')
 
-module.exports = () => {
+module.exports = (serverWatch) => {
 
-	Max.addHandler('play', (toggle) => {
-		if (serverWatch.playing !== toggle) {
-			broadcast(serverWatch.toggle(toggle))
-		}
+	const toggle = (toggle) => {
+		(!!serverWatch.playing !== !!toggle) &&
+			serverWatch.toggle(!!toggle)
 		Max.setDict('stopWatch', serverWatch.output())
-	})
+	}
+
+	Max.addHandler('play', toggle)
+	Max.addHandler(Max.MESSAGE_TYPES.NUMBER, toggle)
   
 	Max.addHandler(Max.MESSAGE_TYPES.BANG, () => {
-		broadcast(serverWatch.reset())
+		serverWatch.reset()
 		Max.setDict('stopWatch', serverWatch.output())
 	})
 
 	Max.addHandler('set', (ms) => {
-		broadcast(serverWatch.reset(ms))
+		serverWatch.reset(ms)
 		Max.setDict('stopWatch', serverWatch.output())
 	})
 
 	Max.addHandler('format', (format) => {
 		serverWatch.format = format
-		broadcast(serverWatch.output())
 		Max.setDict('stopWatch', serverWatch.output())
 	})
   
 	Max.addHandler('copy', () => {
-		copyUrl()
+		clipboard.writeSync(state.url)
 	})
   
 	Max.addHandler('url', () => {
-		Max.outlet(['url', server.url])
+		Max.outlet(['url', state.url])
 	})
 
 	Max.addHandler('port', (port) => {
-		server.port = port
-		server.service.close()
-		server.service = listen()
+		listen(port)
 	})
 
 }

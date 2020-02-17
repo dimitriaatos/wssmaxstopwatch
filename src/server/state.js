@@ -1,15 +1,8 @@
 const ip = require('ip')
 
-const server = {
-	port: 8080,
-	ip: ip.address(),
+module.exports = {
+	PORT: 80,
 	get url() {
-		return `http://${this.ip}${this.port == 80 ? '' : `:${this.port}`}/`
+		return `http://${ip.address()}${this.PORT == 80 ? '' : `:${this.PORT}`}/`
 	}
 }
-
-const constants = {
-	updateTime: 50,
-}
-
-module.exports = {constants, server, init: {}}
