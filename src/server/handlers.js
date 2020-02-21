@@ -38,7 +38,8 @@ module.exports = (serverWatch) => {
 	})
 
 	Max.addHandler('port', (port) => {
-		listen(port)
+		state.server = listen(port)
+		serverWatch.server = state.server
 	})
 
 }

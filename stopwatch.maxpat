@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 56.0, 864.0, 282.0 ],
+		"rect" : [ 34.0, 56.0, 876.0, 274.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -159,18 +159,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 409.166666666666686, 212.0, 129.0, 22.0 ],
 					"text" : "translate ms hh:mm:ss"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-15",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 304.5, 95.0, 46.0, 22.0 ],
-					"text" : "port 80"
 				}
 
 			}
@@ -1265,13 +1253,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-25", 0 ],
 					"source" : [ "obj-14", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-1", 0 ],
-					"source" : [ "obj-15", 0 ]
 				}
 
 			}

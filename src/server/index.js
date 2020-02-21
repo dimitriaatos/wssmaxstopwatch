@@ -11,9 +11,13 @@ Max.getDict('stopWatch').then(dict => {
 		time => Max.outlet(['time', time.ms]),
 		{server: state.server, cli: false, ...dict}
 	)
-
+	
 	watch.on('connection', () => Max.post('Device connected'))
 	watch.on('disconnection', () => Max.post('Device disconnected'))
 
 	require('./handlers')(watch)
+})
+
+process.on('uncaughtException', (err) => {
+	console.log(err)
 })
