@@ -16,7 +16,7 @@ Max.getDict('stopWatch').then(dict => {
 	watch.on('disconnection', () => Max.post('Device disconnected'))
 
 	require('./handlers')(watch)
-})
+}).catch(err => console.log(err))
 
 process.on('uncaughtException', (err) => {
 	console.log(err)
