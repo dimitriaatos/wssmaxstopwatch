@@ -12,7 +12,7 @@
   "author": "Dimitri Aatos Ellinas",
   "license": "CC-BY-4.0",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "clipboardy": "^2.2.0",
     "fullscreen.js": "github:tt-ghost/fullscreen.js#pull/2/head",
     "hide-mouse": "^2.0.2",
